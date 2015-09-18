@@ -2,8 +2,6 @@ import re
 
 subcases = dict()
 currentSubcase = 0
-lastGridLine = 0
-
 gridBuilder = dict()
 
 numberSearch = re.compile('-?\d+(?:\.\d+(?:E[-+]\d+)?)?')
@@ -24,10 +22,8 @@ def parseLine(line):
 
 def handleSubcase(line):
     global currentSubcase
-
     subcaseID = int(numberSearch.search(line).group())
     subcases[subcaseID] = dict()
-    lastGridLine = 0
     currentSubcase = subcaseID
 
 def parseNumber(num):
