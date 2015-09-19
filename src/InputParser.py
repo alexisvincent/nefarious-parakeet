@@ -38,28 +38,37 @@ def pnt2line(pnt, start, end):
 def lineFilter(start, end, point, r):
     return pnt2line(point, start, end)[0] <= r
 
-def addGridItem(item, p1, p2, r):
-    if lineFilter(p1, p2, (item[1], item[2], item[3]), r):
-        dictionary[item[0]] = (item[1], item[2], item[3]) 
+def lineReducer(data, start, end, r):
+    reducedData = dict()
+    for point in data:
+        if lineFilter(start, end, data[point], r):
+            reducedData[point] = data[point]
+    return reducedData
+
+
+def addGridItem(item):
+    #if lineFilter(p1, p2, (item[1], item[2], item[3]), r):
+    dictionary[item[0]] = (item[1], item[2], item[3]) 
 
 def parseNumber(num): 
     if '-' in num[1:]:
         return float(num[0] + num[1:].replace('-', 'e-'))
     return float(num)
 
-def parseLine(line, p1, p2, r):
+def parseLine(line):
     if (line.startswith('GRID')):
         addGridItem((
             int(line[8:16]), 
             parseNumber(line[24:32]), 
             parseNumber(line[32:40]), 
             parseNumber(line[40:48])
-        ), p1, p2, r)
+        ))
 
-def getData(fileName, p1, p2, r):
+
+def getData(fileName):
     dictionary.clear()
     with open(fileName, "r") as file:
         for line in file:
-            parseLine(line, p1, p2, r)
+            parseLine(line)
     file.close()
     return dictionary
